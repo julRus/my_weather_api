@@ -31,6 +31,15 @@ describe("/api", () => {
           ]);
         });
     });
+    it("ERROR:404 - Returns an error message when the given path does not exist", () => {
+      const path = "not-a-path";
+      return request(app)
+        .get(`/api/${path}`)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).to.equal(`Sorry, path: ${path}, has not been found :(`);
+        });
+    });
     it("POST:201 - Returns an array of all the users in the database with a newly posted user", () => {
       return request(app)
         .post("/api/users")
@@ -55,6 +64,24 @@ describe("/api", () => {
       return request(app)
         .get("/api/users/jessJelly")
         .expect(200)
+        .then(({ body: { user } }) => {
+          expect(user).to.be.an("object");
+          expect(user).to.have.keys([
+            "username",
+            "firstname",
+            "lastname",
+            "email",
+            "password",
+            "img_url",
+            "joined_at"
+          ]);
+        });
+    });
+    it("PATCH:201 - Returns a user object with username chnaged to requested username", () => {
+      return request(app)
+        .patch("/api/users/jessJelly")
+        .send()
+        .expect(201)
         .then(({ body: { user } }) => {
           expect(user).to.be.an("object");
           expect(user).to.have.keys([
