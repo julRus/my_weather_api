@@ -50,4 +50,23 @@ describe("/api", () => {
         });
     });
   });
+  describe("/users/:username", () => {
+    it("GET:200 - Returns a user object which matches the given username", () => {
+      return request(app)
+        .get("/api/users/jessJelly")
+        .expect(200)
+        .then(({ body: { user } }) => {
+          expect(user).to.be.an("object");
+          expect(user).to.have.keys([
+            "username",
+            "firstname",
+            "lastname",
+            "email",
+            "password",
+            "img_url",
+            "joined_at"
+          ]);
+        });
+    });
+  });
 });

@@ -23,3 +23,12 @@ exports.createUser = (user, first, last, e, pass, img) => {
       return res[0];
     });
 };
+
+exports.fetchUserByUsername = username => {
+  return connection("my_weather_users")
+    .where("username", "=", username)
+    .first()
+    .then(user => {
+      return user;
+    });
+};
